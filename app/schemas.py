@@ -1,6 +1,7 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
+from pydantic import conint  # Import conint for constrained integers
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Annotated
 
 class PostBase(BaseModel): # Define the Pydantic Post model
     title: str
@@ -16,8 +17,7 @@ class UserOut(BaseModel):  # This model is used for returning user data response
     email: EmailStr
     created_at: datetime
 
-    class Config:
-        orm_mode = True    
+    model_config = {"from_attributes": True} 
 
 
 class Post(PostBase):  # This model is used for returning data response back to user
@@ -26,8 +26,7 @@ class Post(PostBase):  # This model is used for returning data response back to 
     owner_id: int  # The ID of the user who created the post
     owner: UserOut  # Include the user information who created the post by returning a pydantic model
 
-    class Config:
-        orm_mode = True
+    model_config = {"from_attributes": True}
 
 class UserCreate(BaseModel):  # Define the Pydantic User model
     email: EmailStr
@@ -44,3 +43,9 @@ class Token(BaseModel):  # Model for the token response
 
 class TokenData(BaseModel):  # Model for token data
     id: Optional[str] = None  # Optional user ID, can be None if not provided    
+
+class Vote(BaseModel):  # Model for vote data
+    post_id: int  
+    dir:  Annotated[int, Field(ge=0, le=1)]  # Direction of the vote, 1 for upvote, 0 for downvote, used conint to ensure it's either 0 or 1
+
+    model_config = {"from_attributes": True}  # Enable ORM mode to work with SQLAlchemy models    
