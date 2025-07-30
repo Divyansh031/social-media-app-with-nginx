@@ -28,6 +28,12 @@ class Post(PostBase):  # This model is used for returning data response back to 
 
     model_config = {"from_attributes": True}
 
+class PostOut(BaseModel):  # This model is used for returning post data response with votes
+    Post: Post
+    votes: int  # Number of votes for the post    
+
+    model_config = {"from_attributes": True}
+
 class UserCreate(BaseModel):  # Define the Pydantic User model
     email: EmailStr
     password: str
