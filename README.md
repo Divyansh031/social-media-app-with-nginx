@@ -129,6 +129,8 @@ uvicorn app.main:app --reload
 
 - `requirements.txt`: List of Python dependencies.
 
+- `tests/`: Testing functionalities using pytest.
+
 
 ## Usage
 - Ensure your database server is running.
@@ -139,6 +141,24 @@ uvicorn app.main:app --reload
 
 - Refer to the /docs endpoint (e.g. `http://localhost:8000/docs`) for interactive API documentation provided by FastAPI.
 
+
+## Testing
+This project includes unit and integration tests implemented using pytest to ensure the reliability of the backend functionalities.
+
+### Running Tests
+1. Install pytest if not already included in your dependencies
+```bash
+pip install pytest
+```
+
+2. Run the tests from `tests` directory
+```bash
+pytest tests -v -s
+```
+
+*This will discover and execute all test files (typically in a tests/ directory or named with test_ prefix).*
+
+**Note: Ensure your test environment is set up, such as using a test database configuration in your .env file or via environment variables to avoid affecting production data.**
 
 ## Author
 Divyansh Sharma
