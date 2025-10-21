@@ -10,8 +10,20 @@ router = APIRouter(prefix="/users", tags=["Users"])  # Create a router for user-
 # User Endpoints
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut, responses={status.HTTP_409_CONFLICT: {"description": "User already exists"},})
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    # 1. Check if a user with the provided email already exists
+    existing_user = db.query(models.User).filter(models.User.email == user.email).first()
+
+    if existing_user:
+        # 2. If the user exists, raise an HTTP exception 
+        #    (409 Conflict is often used for resource conflicts)
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"User with email '{user.email}' already exists"
+        )
+
+    # 3. If the user doesn't exist, proceed with creation
     # Hash the password before storing it
     hashed_password = utils.hash(user.password)
     user.password = hashed_password
