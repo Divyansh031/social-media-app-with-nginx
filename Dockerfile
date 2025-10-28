@@ -1,11 +1,20 @@
+# Use an official Python runtime as the base image
 FROM python:3.12.7
 
-WORKDIR /usr/src/app
+# Set the working directory inside the container
+WORKDIR /app
 
-COPY requirements.txt ./
+# Copy the requirements file into the container
+COPY requirements.txt .
 
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy the rest of the application code
 COPY . .
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Expose the port the app will run on (FastAPI default is 8000)
+EXPOSE 8000
+
+# Command to run the FastAPI app with Uvicorn
+CMD ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
