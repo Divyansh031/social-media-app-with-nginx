@@ -111,8 +111,8 @@ The **Nginx** container is now listening on port 80.
 
 #### 1. Clone the Repository
 ```bash
-git clone https://github.com/Divyansh031/courseSellingApp.git
-cd courseSellingApp
+git clone https://github.com/Divyansh031/social-media-app-with-nginx.git 
+cd social-media-app-with-nginx
 ```
 #### 2. Set Up a Virtual Environment (recommended)
 ```bash
